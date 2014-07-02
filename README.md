@@ -1,6 +1,6 @@
 # S3Policy
 
-TODO: Write a gem description
+Generate a signed S3 policy document for namespaced clientside uploads.
 
 ## Installation
 
@@ -18,7 +18,23 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require 's3_policy'
+
+policy = S3Policy.generate_policy_document(
+  bucket: "my_awesome_bucket",
+  namespace: "users/#{user_id}/"
+)
+
+signature = S3Policy.sign_document(policy, aws_secret_key)
+
+# Give this to the client
+{
+  aws_access_key_id: aws_access_key_id,
+  policy: policy,
+  signature: signature
+}
+```
 
 ## Contributing
 
