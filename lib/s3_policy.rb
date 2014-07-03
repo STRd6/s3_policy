@@ -20,8 +20,6 @@ module S3Policy
       max_size = options[:max_size] || 1024 * 1024 * 10
       namespace = options[:namespace] || ""
 
-      # TODO: ACL Option
-
       policy_document = {
         expiration: expiration,
         conditions: [
