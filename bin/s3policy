@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+require 's3_policy'
+
+require 'rubygems'
+require 'commander/import'
+
+program :version, S3Policy::VERSION
+program :description, 'Generate json containing a signed S3 policy to handle clientside S3 uploads.'
+
+command :create do |c|
+  c.syntax = 's3policy create [options]'
+  c.summary = 'Generate JSON signed policy document'
+  c.description = 'Generate JSON signed policy document'
+  c.example 'description', 'command example'
+  c.option '--access STRING', String, 'AWS Access Key ID'
+  c.option '--secret STRING', String, 'AWS Secret Key'
+  c.option '--bucket STRING', String, 'AWS Bucket'
+  c.option '--namespace STRING', String, 'Namespace for uploads'
+  c.option '--expiration STRING', String, 'Policy expiration (ISO 8601)'
+  c.action do |args, options|
+    policy = S3Policy.generate_policy_document options
+    signature = S3Policy.sign_document(policy, options.secret)
+
+    puts({
+      aws_access_key_id: options.access,
+      policy: policy,
+      signature: signature
+    }).to_json
+  end
+end
