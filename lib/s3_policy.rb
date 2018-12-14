@@ -48,7 +48,7 @@ module S3Policy
     def sign_encoded_document(encoded_policy_document, secret_key)
       Base64.strict_encode64(
         OpenSSL::HMAC.digest(
-          OpenSSL::Digest::Digest.new('sha1'),
+          OpenSSL::Digest.new('sha1'),
           secret_key,
           encoded_policy_document
         )
